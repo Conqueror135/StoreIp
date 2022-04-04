@@ -4,12 +4,8 @@ router.get('/', async (req, res)=>{
     res.send( await getIps());
     res.status = 200;
 });
-router.get('/:id', async (req, res) =>{
-    res.send( await getIp(req.params.id));
-    res.status = 200;
-});
-const getIP = function(req) {
-    ipAddr = req.headers["x-forwarded-for"];
+let getMyId = function(req) {
+    let ipAddr = req.headers["x-forwarded-for"];
     if (ipAddr){
         let list = ipAddr.split(",")[list.length-1];
         ipAddr = list;
@@ -18,9 +14,13 @@ const getIP = function(req) {
     }
     return ipAddr;
 }
+router.get('/myid', async (req, res) =>{
+    res.json(getMyId(req));
+    res.status = 200;
+});
 router.post('/', async (req, res) => {
     
-    let ip = getIP(req);
+    let ip = getMyId(req);
     let body = req.body;
     let timestamp = Date();
     let code = body.code;
@@ -42,6 +42,10 @@ router.delete('/:id', async (req, res) => {
     const id = req.params.id;
     await deleteIp(id);
     res.json("deleted!");
+    res.status = 200;
+});
+router.get('/:id', async (req, res) =>{
+    res.send( await getIp(req.params.id));
     res.status = 200;
 });
 module.exports = router;
