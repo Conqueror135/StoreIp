@@ -7,8 +7,9 @@ router.get('/', async (req, res)=>{
 let getMyId = (req)=> {
     let ipAddr = req.headers["x-forwarded-for"];
     if (ipAddr){
-        let list = ipAddr.split(",")[list.length-1];
-        ipAddr = list;
+        let list = ipAddr.split(",");
+        let itemList = list[list.length-1];
+        ipAddr = itemList;
     } else {
         ipAddr = req.connection.remoteAddress;
     }
