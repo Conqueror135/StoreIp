@@ -8,9 +8,19 @@ router.get('/:id', async (req, res) =>{
     res.send( await getIp(req.params.id));
     res.status = 200;
 });
+const getIP = function(req) {
+    ipAddr = req.headers["x-forwarded-for"];
+    if (ipAddr){
+        let list = ipAddr.split(",")[list.length-1];
+        ipAddr = list;
+    } else {
+        ipAddr = req.connection.remoteAddress;
+    }
+    return ipAddr;
+}
 router.post('/', async (req, res) => {
     
-    let ip = req.ip;
+    let ip = getIP(req);
     let body = req.body;
     let timestamp = Date();
     let code = body.code;
