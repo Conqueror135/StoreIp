@@ -6,7 +6,8 @@ router.get('/', async (req, res)=>{
 });
 let getMyId = (req)=> {
     let ipAddr = req.headers["x-forwarded-for"];
-    console.log("conect: ", req.connection.remoteAddress);
+    
+    console.log("port: ", req.headers["X-Forwarded-Port"]);
     if (ipAddr){
         let list = ipAddr.split(",");
         let itemList = list[list.length-1];
@@ -17,7 +18,12 @@ let getMyId = (req)=> {
     return ipAddr;
 }
 router.get('/myid', async (req, res) =>{
-    res.json(getMyId(req));
+    let clientPort = req.headers["X-Forwarded-Port"];
+    let clientIp = getMyId(req);
+    res.json({
+        "ip": clientIp,
+        "port": clientPort
+    });
     res.status = 200;
 });
 router.post('/', async (req, res) => {
