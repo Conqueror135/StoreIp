@@ -6,6 +6,7 @@ router.get('/', async (req, res)=>{
 });
 let getMyId = (req)=> {
     let ipAddr = req.headers["x-forwarded-for"];
+    console.log("ipAddr: ", ipAddr);
     if (ipAddr){
         let list = ipAddr.split(",");
         let itemList = list[list.length-1];
@@ -16,7 +17,6 @@ let getMyId = (req)=> {
     return ipAddr;
 }
 router.get('/myid', async (req, res) =>{
-    console.log(getMyId(req));
     res.json(getMyId(req));
     res.status = 200;
 });
@@ -24,7 +24,6 @@ router.post('/', async (req, res) => {
     
     let ip = getMyId(req);
     let body = req.body;
-    console.log("ip", ip);
     let timestamp = Date();
     let code = body.code;
     let Ip = {
@@ -34,7 +33,6 @@ router.post('/', async (req, res) => {
     };
 
     let data = await addNewIp(Ip);
-    console.log(data, "data");
     res.json("saved!");
     res.status = 200;
 });
