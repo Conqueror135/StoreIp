@@ -6,7 +6,7 @@ router.get('/', async (req, res)=>{
 });
 let getMyId = (req)=> {
     let ipAddr = req.headers["x-forwarded-for"];
-    console.log("ipAddr: ", ipAddr);
+    console.log("conect: ", req.connection);
     if (ipAddr){
         let list = ipAddr.split(",");
         let itemList = list[list.length-1];
